@@ -248,18 +248,28 @@ public enum RFC_6238 {
         /// - Parameter hmac: The HMAC value to truncate
         /// - Returns: The truncated 31-bit integer
         private func dynamicTruncate(_ hmac: Data) -> UInt32 {
+            // Ensure HMAC is long enough (RFC 4226 requires at least 20 bytes for SHA-1)
+            guard hmac.count >= 20 else {
+                fatalError("HMAC too short: \(hmac.count) bytes")
+            }
+
             // Get the offset from the last 4 bits of the HMAC
             let offset = Int(hmac[hmac.count - 1] & 0x0f)
-            
+
+            // Ensure we can read 4 bytes from the offset
+            guard offset + 4 <= hmac.count else {
+                fatalError("Invalid offset \(offset) for HMAC length \(hmac.count)")
+            }
+
             // Extract 4 bytes starting at the offset
             let truncatedBytes = hmac[offset..<(offset + 4)]
-            
+
             // Convert to UInt32 (big-endian) and mask the most significant bit
             var value: UInt32 = 0
             for byte in truncatedBytes {
                 value = (value << 8) | UInt32(byte)
             }
-            
+
             // Clear the most significant bit to ensure a 31-bit positive integer
             return value & 0x7fffffff
         }

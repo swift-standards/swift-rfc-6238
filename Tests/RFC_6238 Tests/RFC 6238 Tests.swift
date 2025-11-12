@@ -8,6 +8,9 @@
 import Testing
 import Foundation
 @testable import RFC_6238
+#if canImport(CryptoKit)
+import CryptoKit
+#endif
 
 @Suite("RFC 6238 Tests")
 struct RFC6238Tests {
@@ -86,9 +89,20 @@ struct RFC6238Tests {
                     break
                 }
             }
-            
-            // Return empty data for unknown test cases
-            return Data()
+
+            // Fall back to actual HMAC for test cases not in our known vectors
+            #if canImport(CryptoKit)
+            switch algorithm {
+            case .sha1:
+                return Data(HMAC<Insecure.SHA1>.authenticationCode(for: data, using: SymmetricKey(data: key)))
+            case .sha256:
+                return Data(HMAC<SHA256>.authenticationCode(for: data, using: SymmetricKey(data: key)))
+            case .sha512:
+                return Data(HMAC<SHA512>.authenticationCode(for: data, using: SymmetricKey(data: key)))
+            }
+            #else
+            fatalError("Unknown test vector and CryptoKit not available: key=\(key.hexString), algorithm=\(algorithm), data=\(data.hexString)")
+            #endif
         }
     }
     
