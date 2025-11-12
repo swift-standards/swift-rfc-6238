@@ -5,7 +5,9 @@
 //  Verifies that README code examples actually work
 //
 
+#if canImport(CryptoKit)
 import CryptoKit
+#endif
 import Foundation
 import RFC_6238
 import Testing
@@ -13,6 +15,7 @@ import Testing
 @Suite("README Verification")
 struct ReadmeVerificationTests {
 
+#if canImport(CryptoKit)
     // HMAC Provider implementation for tests
     struct CryptoKitHMACProvider: RFC_6238.HMACProvider {
         func hmac(algorithm: RFC_6238.Algorithm, key: Data, data: Data) -> Data {
@@ -166,6 +169,8 @@ struct ReadmeVerificationTests {
         #expect(hotp.digits == 6)
         #expect(hotp.algorithm == .sha1)
     }
+
+#endif
 
     @Test("README Line 169-175: Supported Algorithms")
     func supportedAlgorithms() throws {
