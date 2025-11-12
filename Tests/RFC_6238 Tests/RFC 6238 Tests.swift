@@ -34,17 +34,17 @@ struct RFC6238Tests {
                 // SHA1 test vectors from RFC 6238
                 switch data.hexString {
                 case "0000000000000001": // T = 1 (59 seconds)
-                    return Data(hex: "cc93cf18508d94934c64b65d8ba7667fb7cde4b0")!
-                case "00000000023523ec": // T = 37037036 
                     return Data(hex: "75a48a19d4cbe100644e8ac1397eea747a2d33ab")!
+                case "00000000023523ec": // T = 37037036
+                    return Data(hex: "278c02e53610f84c40bd9135acd4101012410a14")!
                 case "00000000023523ed": // T = 37037037
-                    return Data(hex: "0bacb7fa082fef30782211938bc1c5e70416ff44")!
+                    return Data(hex: "b0092b21d048af209da0a1ddd498ade8a79487ed")!
                 case "000000000273ef07": // T = 41152263
-                    return Data(hex: "66c28227d03a2d5529262ff016a1e6ef76557ece")!
+                    return Data(hex: "907cd1a9116564ecb9d5d1780325f246173fe703")!
                 case "0000000003f940aa": // T = 66666666
-                    return Data(hex: "a904c900a64b35909874b33e61c5938a8e15ed1c")!
+                    return Data(hex: "25a326d31fc366244cad054976020c7b56b13d5f")!
                 case "0000000027bc86aa": // T = 666666666
-                    return Data(hex: "a37e783d7b7233c083d4f62926c7a25f238d0316")!
+                    return Data(hex: "ab07e97e2c1278769dbcd75783aabde75ed8550a")!
                 default:
                     break
                 }
@@ -54,17 +54,17 @@ struct RFC6238Tests {
                 // SHA256 test vectors
                 switch data.hexString {
                 case "0000000000000001":
-                    return Data(hex: "32855612b2e7b6c0e4d8c43df51a652d154923670e93e532e299b8a13221fe6e")!
+                    return Data(hex: "392514c9dd4165d4709456062c78e04e16e68718515951333bdb8b26caa3053c")!
                 case "00000000023523ec":
-                    return Data(hex: "15266d14b4f62db7262dfbc09e5513998ff0bc1eede1507fae5e6161871cd524")!
+                    return Data(hex: "4eed729864525d771326c6049bc885629fb8813ebb417e5704df02358793f056")!
                 case "00000000023523ed":
-                    return Data(hex: "055fceb559018c3db87308e6527cf765c6840b9990e1187797a079c9b48fe40e")!
+                    return Data(hex: "cb48f7ef5cd98f6d7bfcb31ae7458ff692a015776205de7e1abfff29d6d48a9d")!
                 case "000000000273ef07":
-                    return Data(hex: "11e65e295cf1dd27e701ccfd85a7f8e5b3c6424872c6d01a31e0729802ab72f3")!
+                    return Data(hex: "3befb8821caef9df4e05790da0966163f4e38feee7f71fcd289c3de48d3486d9")!
                 case "0000000003f940aa":
-                    return Data(hex: "1c5129c7e7a56b71bc1dc7c30ab95e3c435c43e5e4c6eb23e17dcb5bb0b71019")!
+                    return Data(hex: "a4e8eabbe549adfa65408945a9282cb93f394f06c0d4f122260963641bc3abe2")!
                 case "0000000027bc86aa":
-                    return Data(hex: "99943326369823477794969992ceadb8cd34e20b91aa72e16e86efae37070e08")!
+                    return Data(hex: "1363cc0ee3557f092e5b55ea3ddb06bcd20f063ce393ccf670059e3ca44941f8")!
                 default:
                     break
                 }
@@ -74,17 +74,17 @@ struct RFC6238Tests {
                 // SHA512 test vectors
                 switch data.hexString {
                 case "0000000000000001":
-                    return Data(hex: "8efdc1305ac578a13ce1b2ec01eeb7b7e809aba9fd91229e4035793adde34e71ac089f3deea7c9ae37dd4f1e73713bc3e6ac96b70fcd3e8a5f9df96f7c8bc7a0")!
+                    return Data(hex: "6f76f324230cefda1d3f65309a0badb36efce9528ada64967d71e4e9d74c4aa37fe7650f931ab86ddccc2d38962d720ee626a20feb311b485a92e3bb0796df28")!
                 case "00000000023523ec":
-                    return Data(hex: "3213629ed04e6d2662f0dd88fbdf616ea00c6a684b9d5749eb928f23ebfc7867fc0a529e6c76c66f05fe29f92faa833e3ab5e72e7fbb488e30c15b3e8d9dc58b")!
+                    return Data(hex: "b3381250260d6a9e811ae58dfa406705e38c804c97528d5a7ed8ee533331f8c43cc3454911ad1d2761f9380170c0b180a657e3a944c796e05d09f2d1630b7505")!
                 case "00000000023523ed":
-                    return Data(hex: "e37709e104e4932bc592c85c32e094c839ba8f996c3e0ad9e22dd66e58af4b7fb2bb4e7f22c58a0e67a5730c45be89c75e87faaeff2e646b567a0797b413e618")!
+                    return Data(hex: "01713ed59e49948a4f0fffb7466baebac66362d90764a5a23df761636e1535c44b635339ec00a789b8ca45cd3d727acd6b995047547f6f68adc6f16a7436c331")!
                 case "000000000273ef07":
-                    return Data(hex: "2bde459bd53f8450f16a5c23afb699d7eb87fc387b96e039bb931f87c6f40008a12dd71d853c929a95e0159cf8fdcded6fb12e699c4616ba43f9ab965ee17199")!
+                    return Data(hex: "87d0cfb5d4e968d7d9041a5cf21dd7d460705784004f0244edb98004e6cf9942ace539d621c97dc0fb75f6f10d64af1f09ecae83ea7f1213c7fa187dfaf6b938")!
                 case "0000000003f940aa":
-                    return Data(hex: "785472e4fb55b1a8c8c740e26b0df190a3ddacf768fcb18fb4959dc6e9103bb9b16e69b2eb7b103b95cfb6aa1dcb0fe16e7761f6f656727f616f9f4dce2e440f")!
+                    return Data(hex: "129baa738cfa1565a24297237bce282671ff6e261754eb7011e1e75bd2555b326313142a1f9fe2f31d9ce6cc95d3b16a0dee56f2492f2f76885702d98bfadc93")!
                 case "0000000027bc86aa":
-                    return Data(hex: "77376e28618f2b82c5beab4d525b036e106e25d4e0431e779b8e1dd67a2e5b062f0fd785ba95e37311e54ad5d06b5f3e9ac3f5eb1a7bec6f03dc7a08a5e77b6e")!
+                    return Data(hex: "562298a02af13e7522127adee3dc6678d53669ca2b7016186968f9a9c14f51d1e7098ba91293a01b5f3bab4207a2af5ce332a45f2c2ff2b9885aa42ff61cb426")!
                 default:
                     break
                 }
