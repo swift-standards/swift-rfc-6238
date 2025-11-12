@@ -39,6 +39,8 @@ struct RFC6238Tests {
                     return Data(hex: "278c02e53610f84c40bd9135acd4101012410a14")!
                 case "00000000023523ed": // T = 37037037
                     return Data(hex: "b0092b21d048af209da0a1ddd498ade8a79487ed")!
+                case "00000000023523ee": // T = 37037038 (for window testing)
+                    return Data(hex: "1c305c9694851807300bc28967778ed3db135a74")!
                 case "000000000273ef07": // T = 41152263
                     return Data(hex: "907cd1a9116564ecb9d5d1780325f246173fe703")!
                 case "0000000003f940aa": // T = 66666666
@@ -90,19 +92,8 @@ struct RFC6238Tests {
                 }
             }
 
-            // Fall back to actual HMAC for test cases not in our known vectors
-            #if canImport(CryptoKit)
-            switch algorithm {
-            case .sha1:
-                return Data(HMAC<Insecure.SHA1>.authenticationCode(for: data, using: SymmetricKey(data: key)))
-            case .sha256:
-                return Data(HMAC<SHA256>.authenticationCode(for: data, using: SymmetricKey(data: key)))
-            case .sha512:
-                return Data(HMAC<SHA512>.authenticationCode(for: data, using: SymmetricKey(data: key)))
-            }
-            #else
-            fatalError("Unknown test vector and CryptoKit not available: key=\(key.hexString), algorithm=\(algorithm), data=\(data.hexString)")
-            #endif
+            // If we reach here, the test case is not in our known vectors
+            fatalError("Unknown test vector: key=\(key.hexString), algorithm=\(algorithm), data=\(data.hexString)")
         }
     }
     
