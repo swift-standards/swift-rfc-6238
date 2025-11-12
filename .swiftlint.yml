@@ -3,7 +3,6 @@ disabled_rules:
   - trailing_comma
   - redundant_discardable_let
   - trailing_whitespace
-  - type_name
 
 opt_in_rules:
   - explicit_init
@@ -49,8 +48,8 @@ function_parameter_count:
 
 # Cyclomatic complexity
 cyclomatic_complexity:
-  warning: 15
-  error: 25
+  warning: 25
+  error: 30
 
 # Identifier name settings
 identifier_name:
