@@ -5,7 +5,6 @@
 //  Created by Coen ten Thije Boonkkamp on 2025-08-20.
 //
 
-import Foundation
 
 /// Implementation of RFC 6238: TOTP: Time-Based One-Time Password Algorithm
 ///
@@ -350,12 +349,12 @@ extension Data {
     public init?(base32Encoded base32: String) {
         // Remove whitespace and convert to uppercase
         let cleanedBase32 = base32
-            .replacingOccurrences(of: " ", with: "")
-            .replacingOccurrences(of: "-", with: "")
+            .replacing(" ", with: "")
+            .replacing("-", with: "")
             .uppercased()
         
         // Remove padding
-        let noPadding = cleanedBase32.replacingOccurrences(of: "=", with: "")
+        let noPadding = cleanedBase32.replacing("=", with: "")
         
         var bits = 0
         var value = 0

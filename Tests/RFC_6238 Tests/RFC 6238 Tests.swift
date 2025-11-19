@@ -6,7 +6,6 @@
 //
 
 import Testing
-import Foundation
 @testable import RFC_6238
 #if canImport(CryptoKit)
 import CryptoKit
@@ -395,7 +394,7 @@ struct RFC6238Tests {
 
 extension Data {
     init?(hex: String) {
-        let hex = hex.replacingOccurrences(of: " ", with: "")
+        let hex = hex.replacing(" ", with: "")
         guard hex.count % 2 == 0 else { return nil }
         
         var data = Data()

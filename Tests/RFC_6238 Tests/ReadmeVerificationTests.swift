@@ -8,7 +8,6 @@
 #if canImport(CryptoKit)
 import CryptoKit
 #endif
-import Foundation
 import RFC_6238
 import Testing
 
