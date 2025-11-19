@@ -11,8 +11,8 @@ import Testing
 import CryptoKit
 #endif
 
-@Suite("RFC 6238 Tests")
-struct RFC6238Tests {
+@Suite
+struct `RFC 6238 Tests` {
     
     // MARK: - Test HMAC Provider
     
@@ -98,8 +98,8 @@ struct RFC6238Tests {
     
     // MARK: - RFC 6238 Test Vectors
     
-    @Test("RFC 6238 Test Vectors - SHA1")
-    func testRFC6238TestVectorsSHA1() throws {
+    @Test
+    func `RFC 6238 Test Vectors - SHA1`() throws {
         // Test vectors from RFC 6238 Appendix B
         let secret = "12345678901234567890".data(using: .ascii)!
         let totp = try RFC_6238.TOTP(
@@ -127,8 +127,8 @@ struct RFC6238Tests {
         }
     }
     
-    @Test("RFC 6238 Test Vectors - SHA256")
-    func testRFC6238TestVectorsSHA256() throws {
+    @Test
+    func `RFC 6238 Test Vectors - SHA256`() throws {
         // Test vectors from RFC 6238 Appendix B
         let secret = "12345678901234567890123456789012".data(using: .ascii)!
         let totp = try RFC_6238.TOTP(
@@ -156,8 +156,8 @@ struct RFC6238Tests {
         }
     }
     
-    @Test("RFC 6238 Test Vectors - SHA512")
-    func testRFC6238TestVectorsSHA512() throws {
+    @Test
+    func `RFC 6238 Test Vectors - SHA512`() throws {
         // Test vectors from RFC 6238 Appendix B
         let secret = "1234567890123456789012345678901234567890123456789012345678901234".data(using: .ascii)!
         let totp = try RFC_6238.TOTP(
@@ -187,8 +187,8 @@ struct RFC6238Tests {
     
     // MARK: - Base32 Tests
     
-    @Test("Base32 Encoding")
-    func testBase32Encoding() {
+    @Test
+    func `Base32 Encoding`() {
         let testCases: [(String, String)] = [
             ("", ""),
             ("f", "MY======"),
@@ -207,8 +207,8 @@ struct RFC6238Tests {
         }
     }
     
-    @Test("Base32 Decoding")
-    func testBase32Decoding() {
+    @Test
+    func `Base32 Decoding`() {
         let testCases: [(String, String)] = [
             ("", ""),
             ("MY======", "f"),
@@ -235,8 +235,8 @@ struct RFC6238Tests {
         }
     }
     
-    @Test("Base32 Round Trip")
-    func testBase32RoundTrip() {
+    @Test
+    func `Base32 Round Trip`() {
         let testStrings = [
             "Hello, World!",
             "The quick brown fox jumps over the lazy dog",
@@ -258,8 +258,8 @@ struct RFC6238Tests {
     
     // MARK: - TOTP Configuration Tests
     
-    @Test("TOTP Initialization")
-    func testTOTPInitialization() throws {
+    @Test
+    func `TOTP Initialization`() throws {
         let secret = "JBSWY3DPEHPK3PXP"
         let totp = try RFC_6238.TOTP(base32Secret: secret)
         
@@ -269,8 +269,8 @@ struct RFC6238Tests {
         #expect(totp.t0 == 0)
     }
     
-    @Test("TOTP Provisioning URI")
-    func testTOTPProvisioningURI() throws {
+    @Test
+    func `TOTP Provisioning URI`() throws {
         let secret = "JBSWY3DPEHPK3PXP"
         let totp = try RFC_6238.TOTP(base32Secret: secret, digits: 6, algorithm: .sha256)
         
@@ -285,8 +285,8 @@ struct RFC6238Tests {
         #expect(uri.contains("issuer=Example%20Corp"))
     }
     
-    @Test("Time Counter Calculation")
-    func testTimeCounter() throws {
+    @Test
+    func `Time Counter Calculation`() throws {
         let secret = Data(repeating: 0, count: 20)
         let totp = try RFC_6238.TOTP(secret: secret, timeStep: 30)
         
@@ -299,8 +299,8 @@ struct RFC6238Tests {
         #expect(totp.counter(at: Date(timeIntervalSince1970: 1111111111)) == 37037037)
     }
     
-    @Test("Time Remaining Calculation")
-    func testTimeRemaining() throws {
+    @Test
+    func `Time Remaining Calculation`() throws {
         let secret = Data(repeating: 0, count: 20)
         let totp = try RFC_6238.TOTP(secret: secret, timeStep: 30)
         
@@ -311,8 +311,8 @@ struct RFC6238Tests {
         #expect(abs(totp.timeRemaining(at: Date(timeIntervalSince1970: 30)) - 30) < 0.001)
     }
     
-    @Test("OTP Validation")
-    func testValidation() throws {
+    @Test
+    func `OTP Validation`() throws {
         let secret = "12345678901234567890".data(using: .ascii)!
         let totp = try RFC_6238.TOTP(
             secret: secret,
@@ -336,8 +336,8 @@ struct RFC6238Tests {
     
     // MARK: - Error Handling Tests
     
-    @Test("TOTP Initialization Errors")
-    func testTOTPInitializationErrors() {
+    @Test
+    func `TOTP Initialization Errors`() {
         // Test empty secret
         #expect(throws: RFC_6238.Error.emptySecret) {
             _ = try RFC_6238.TOTP(secret: Data())
@@ -372,8 +372,8 @@ struct RFC6238Tests {
         }
     }
     
-    @Test("HOTP Initialization Errors")
-    func testHOTPInitializationErrors() {
+    @Test
+    func `HOTP Initialization Errors`() {
         // Test empty secret
         #expect(throws: RFC_6238.Error.emptySecret) {
             _ = try RFC_6238.HOTP(secret: Data())

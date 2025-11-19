@@ -11,8 +11,8 @@ import CryptoKit
 import RFC_6238
 import Testing
 
-@Suite("README Verification")
-struct ReadmeVerificationTests {
+@Suite
+struct `README Verification` {
 
 #if canImport(CryptoKit)
     // HMAC Provider implementation for tests
@@ -31,8 +31,8 @@ struct ReadmeVerificationTests {
         }
     }
 
-    @Test("README Line 50-68: HMAC Provider implementation")
-    func hmacProviderImplementation() throws {
+    @Test
+    func `README Line 50-68: HMAC Provider implementation`() throws {
         // Test that the HMAC provider example compiles and works
         let hmacProvider = CryptoKitHMACProvider()
         let key = Data("test".utf8)
@@ -42,8 +42,8 @@ struct ReadmeVerificationTests {
         #expect(result.count == 32)  // SHA256 produces 32 bytes
     }
 
-    @Test("README Line 72-89: Generating TOTP Codes")
-    func generatingTOTPCodes() throws {
+    @Test
+    func `README Line 72-89: Generating TOTP Codes`() throws {
         // Create TOTP instance from base32 secret
         let totp = try RFC_6238.TOTP(
             base32Secret: "JBSWY3DPEHPK3PXP",
@@ -65,8 +65,8 @@ struct ReadmeVerificationTests {
         #expect(remaining <= 30)
     }
 
-    @Test("README Line 93-101: Validating TOTP Codes")
-    func validatingTOTPCodes() throws {
+    @Test
+    func `README Line 93-101: Validating TOTP Codes`() throws {
         let totp = try RFC_6238.TOTP(
             base32Secret: "JBSWY3DPEHPK3PXP",
             timeStep: 30,
@@ -88,8 +88,8 @@ struct ReadmeVerificationTests {
         #expect(isValidAtTime)
     }
 
-    @Test("README Line 105-114: Generating Provisioning URIs")
-    func generatingProvisioningURIs() throws {
+    @Test
+    func `README Line 105-114: Generating Provisioning URIs`() throws {
         let totp = try RFC_6238.TOTP(
             base32Secret: "JBSWY3DPEHPK3PXP",
             timeStep: 30,
@@ -111,8 +111,8 @@ struct ReadmeVerificationTests {
         #expect(uri.contains("issuer=Example"))
     }
 
-    @Test("README Line 118-129: Using HOTP (Counter-Based)")
-    func usingHOTP() throws {
+    @Test
+    func `README Line 118-129: Using HOTP (Counter-Based)`() throws {
         let hmacProvider = CryptoKitHMACProvider()
 
         // Create HOTP instance
@@ -129,8 +129,8 @@ struct ReadmeVerificationTests {
         #expect(counterOTP.allSatisfy { $0.isNumber })
     }
 
-    @Test("README Line 135-152: TOTP Configuration")
-    func totpConfiguration() throws {
+    @Test
+    func `README Line 135-152: TOTP Configuration`() throws {
         let secret = Data("test secret".utf8)
 
         // Test default initialization
@@ -155,8 +155,8 @@ struct ReadmeVerificationTests {
         #expect(totp2.digits == 6)
     }
 
-    @Test("README Line 156-165: HOTP Configuration")
-    func hotpConfiguration() throws {
+    @Test
+    func `README Line 156-165: HOTP Configuration`() throws {
         let secret = Data("test secret".utf8)
 
         let hotp = try RFC_6238.HOTP(
@@ -171,8 +171,8 @@ struct ReadmeVerificationTests {
 
 #endif
 
-    @Test("README Line 169-175: Supported Algorithms")
-    func supportedAlgorithms() throws {
+    @Test
+    func `README Line 169-175: Supported Algorithms`() throws {
         #expect(RFC_6238.Algorithm.sha1.rawValue == "SHA1")
         #expect(RFC_6238.Algorithm.sha256.rawValue == "SHA256")
         #expect(RFC_6238.Algorithm.sha512.rawValue == "SHA512")
@@ -182,8 +182,8 @@ struct ReadmeVerificationTests {
         #expect(allCases.count == 3)
     }
 
-    @Test("README Line 179-186: Error Handling")
-    func errorHandling() throws {
+    @Test
+    func `README Line 179-186: Error Handling`() throws {
         // Test invalid base32
         #expect(throws: RFC_6238.Error.invalidBase32String) {
             _ = try RFC_6238.TOTP(base32Secret: "invalid!@#$")
