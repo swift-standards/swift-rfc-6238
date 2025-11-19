@@ -1,9 +1,9 @@
-// swift-tools-version:6.0
+// swift-tools-version:6.2
 
 import PackageDescription
 
 extension String {
-    static let rfc6238: Self = "RFC_6238"
+    static let rfc6238: Self = "RFC 6238"
 }
 
 extension Target.Dependency {
