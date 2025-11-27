@@ -23,7 +23,7 @@ let package = Package(
     ],
     dependencies: [
         // Add RFC dependencies here as needed
-        // .package(url: "https://github.com/swift-standards/swift-rfc-1123.git", branch: "main"),
+        // .package(url: "https://github.com/swift-standards/swift-rfc-1123.git", from: "0.1.0"),
     ],
     targets: [
         .target(
@@ -42,4 +42,16 @@ let package = Package(
     swiftLanguageModes: [.v6]
 )
 
-extension String { var tests: Self { self + " Tests" } }
+extension String {
+    var tests: Self { self + " Tests" }
+    var foundation: Self { self + " Foundation" }
+}
+
+for target in package.targets where ![.system, .binary, .plugin].contains(target.type) {
+    let existing = target.swiftSettings ?? []
+    target.swiftSettings = existing + [
+        .enableUpcomingFeature("ExistentialAny"),
+        .enableUpcomingFeature("InternalImportsByDefault"),
+        .enableUpcomingFeature("MemberImportVisibility")
+    ]
+}
