@@ -6,171 +6,179 @@
 //
 
 import Foundation
-#if canImport(CryptoKit)
-import CryptoKit
-#endif
 import RFC_6238
 import Testing
+
+#if canImport(CryptoKit)
+    import CryptoKit
+#endif
 
 @Suite
 struct `README Verification` {
 
-#if canImport(CryptoKit)
-    // HMAC Provider implementation for tests
-    struct CryptoKitHMACProvider: RFC_6238.HMACProvider {
-        func hmac(algorithm: RFC_6238.Algorithm, key: Data, data: Data) -> Data {
-            let symmetricKey = SymmetricKey(data: key)
+    #if canImport(CryptoKit)
+        // HMAC Provider implementation for tests
+        struct CryptoKitHMACProvider: RFC_6238.HMACProvider {
+            func hmac(algorithm: RFC_6238.Algorithm, key: Data, data: Data) -> Data {
+                let symmetricKey = SymmetricKey(data: key)
 
-            switch algorithm {
-            case .sha1:
-                return Data(HMAC<Insecure.SHA1>.authenticationCode(for: data, using: symmetricKey))
-            case .sha256:
-                return Data(HMAC<SHA256>.authenticationCode(for: data, using: symmetricKey))
-            case .sha512:
-                return Data(HMAC<SHA512>.authenticationCode(for: data, using: symmetricKey))
+                switch algorithm {
+                case .sha1:
+                    return Data(
+                        HMAC<Insecure.SHA1>.authenticationCode(for: data, using: symmetricKey)
+                    )
+                case .sha256:
+                    return Data(HMAC<SHA256>.authenticationCode(for: data, using: symmetricKey))
+                case .sha512:
+                    return Data(HMAC<SHA512>.authenticationCode(for: data, using: symmetricKey))
+                }
             }
         }
-    }
 
-    @Test
-    func `README Line 50-68: HMAC Provider implementation`() throws {
-        // Test that the HMAC provider example compiles and works
-        let hmacProvider = CryptoKitHMACProvider()
-        let key = Data("test".utf8)
-        let data = Data("message".utf8)
+        @Test
+        func `README Line 50-68: HMAC Provider implementation`() throws {
+            // Test that the HMAC provider example compiles and works
+            let hmacProvider = CryptoKitHMACProvider()
+            let key = Data("test".utf8)
+            let data = Data("message".utf8)
 
-        let result = hmacProvider.hmac(algorithm: .sha256, key: key, data: data)
-        #expect(result.count == 32)  // SHA256 produces 32 bytes
-    }
+            let result = hmacProvider.hmac(algorithm: .sha256, key: key, data: data)
+            #expect(result.count == 32)  // SHA256 produces 32 bytes
+        }
 
-    @Test
-    func `README Line 72-89: Generating TOTP Codes`() throws {
-        // Create TOTP instance from base32 secret
-        let totp = try RFC_6238.TOTP(
-            base32Secret: "JBSWY3DPEHPK3PXP",
-            timeStep: 30,
-            digits: 6,
-            algorithm: .sha1
-        )
+        @Test
+        func `README Line 72-89: Generating TOTP Codes`() throws {
+            // Create TOTP instance from base32 secret
+            let totp = try RFC_6238.TOTP(
+                base32Secret: "JBSWY3DPEHPK3PXP",
+                timeStep: 30,
+                digits: 6,
+                algorithm: .sha1
+            )
 
-        // Generate current OTP
-        let hmacProvider = CryptoKitHMACProvider()
-        let otp = totp.generate(using: hmacProvider)
+            // Generate current OTP
+            let hmacProvider = CryptoKitHMACProvider()
+            let otp = totp.generate(using: hmacProvider)
 
-        #expect(otp.count == 6)
-        #expect(otp.allSatisfy { $0.isNumber })
+            #expect(otp.count == 6)
+            #expect(otp.allSatisfy { $0.isNumber })
 
-        // Check remaining time
-        let remaining = totp.timeRemaining()
-        #expect(remaining > 0)
-        #expect(remaining <= 30)
-    }
+            // Check remaining time
+            let remaining = totp.timeRemaining()
+            #expect(remaining > 0)
+            #expect(remaining <= 30)
+        }
 
-    @Test
-    func `README Line 93-101: Validating TOTP Codes`() throws {
-        let totp = try RFC_6238.TOTP(
-            base32Secret: "JBSWY3DPEHPK3PXP",
-            timeStep: 30,
-            digits: 6,
-            algorithm: .sha1
-        )
+        @Test
+        func `README Line 93-101: Validating TOTP Codes`() throws {
+            let totp = try RFC_6238.TOTP(
+                base32Secret: "JBSWY3DPEHPK3PXP",
+                timeStep: 30,
+                digits: 6,
+                algorithm: .sha1
+            )
 
-        let hmacProvider = CryptoKitHMACProvider()
+            let hmacProvider = CryptoKitHMACProvider()
 
-        // Generate and validate current OTP
-        let otp = totp.generate(using: hmacProvider)
-        let isValid = totp.validate(otp, window: 1, using: hmacProvider)
-        #expect(isValid)
+            // Generate and validate current OTP
+            let otp = totp.generate(using: hmacProvider)
+            let isValid = totp.validate(otp, window: 1, using: hmacProvider)
+            #expect(isValid)
 
-        // Validate at specific time
-        let testDate = Date(timeIntervalSince1970: 1_111_111_109)
-        let otpAtTime = totp.generate(at: testDate, using: hmacProvider)
-        let isValidAtTime = totp.validate(otpAtTime, at: testDate, window: 0, using: hmacProvider)
-        #expect(isValidAtTime)
-    }
+            // Validate at specific time
+            let testDate = Date(timeIntervalSince1970: 1_111_111_109)
+            let otpAtTime = totp.generate(at: testDate, using: hmacProvider)
+            let isValidAtTime = totp.validate(
+                otpAtTime,
+                at: testDate,
+                window: 0,
+                using: hmacProvider
+            )
+            #expect(isValidAtTime)
+        }
 
-    @Test
-    func `README Line 105-114: Generating Provisioning URIs`() throws {
-        let totp = try RFC_6238.TOTP(
-            base32Secret: "JBSWY3DPEHPK3PXP",
-            timeStep: 30,
-            digits: 6,
-            algorithm: .sha1
-        )
+        @Test
+        func `README Line 105-114: Generating Provisioning URIs`() throws {
+            let totp = try RFC_6238.TOTP(
+                base32Secret: "JBSWY3DPEHPK3PXP",
+                timeStep: 30,
+                digits: 6,
+                algorithm: .sha1
+            )
 
-        // Generate URI for authenticator apps
-        let uri = totp.provisioningURI(
-            label: "user@example.com",
-            issuer: "Example Corp"
-        )
+            // Generate URI for authenticator apps
+            let uri = totp.provisioningURI(
+                label: "user@example.com",
+                issuer: "Example Corp"
+            )
 
-        #expect(uri.starts(with: "otpauth://totp/"))
-        #expect(uri.contains("secret=JBSWY3DPEHPK3PXP"))
-        #expect(uri.contains("algorithm=SHA1"))
-        #expect(uri.contains("digits=6"))
-        #expect(uri.contains("period=30"))
-        #expect(uri.contains("issuer=Example"))
-    }
+            #expect(uri.starts(with: "otpauth://totp/"))
+            #expect(uri.contains("secret=JBSWY3DPEHPK3PXP"))
+            #expect(uri.contains("algorithm=SHA1"))
+            #expect(uri.contains("digits=6"))
+            #expect(uri.contains("period=30"))
+            #expect(uri.contains("issuer=Example"))
+        }
 
-    @Test
-    func `README Line 118-129: Using HOTP (Counter-Based)`() throws {
-        let hmacProvider = CryptoKitHMACProvider()
+        @Test
+        func `README Line 118-129: Using HOTP (Counter-Based)`() throws {
+            let hmacProvider = CryptoKitHMACProvider()
 
-        // Create HOTP instance
-        let hotp = try RFC_6238.HOTP(
-            secret: Data("12345678901234567890".utf8),
-            digits: 6,
-            algorithm: .sha1
-        )
+            // Create HOTP instance
+            let hotp = try RFC_6238.HOTP(
+                secret: Data("12345678901234567890".utf8),
+                digits: 6,
+                algorithm: .sha1
+            )
 
-        // Generate OTP for specific counter value
-        let counterOTP = hotp.generate(counter: 42, using: hmacProvider)
+            // Generate OTP for specific counter value
+            let counterOTP = hotp.generate(counter: 42, using: hmacProvider)
 
-        #expect(counterOTP.count == 6)
-        #expect(counterOTP.allSatisfy { $0.isNumber })
-    }
+            #expect(counterOTP.count == 6)
+            #expect(counterOTP.allSatisfy { $0.isNumber })
+        }
 
-    @Test
-    func `README Line 135-152: TOTP Configuration`() throws {
-        let secret = Data("test secret".utf8)
+        @Test
+        func `README Line 135-152: TOTP Configuration`() throws {
+            let secret = Data("test secret".utf8)
 
-        // Test default initialization
-        let totp1 = try RFC_6238.TOTP(
-            secret: secret,
-            timeStep: 30,
-            digits: 6,
-            algorithm: .sha1,
-            t0: 0
-        )
-        #expect(totp1.digits == 6)
-        #expect(totp1.timeStep == 30)
+            // Test default initialization
+            let totp1 = try RFC_6238.TOTP(
+                secret: secret,
+                timeStep: 30,
+                digits: 6,
+                algorithm: .sha1,
+                t0: 0
+            )
+            #expect(totp1.digits == 6)
+            #expect(totp1.timeStep == 30)
 
-        // Test base32 initialization
-        let totp2 = try RFC_6238.TOTP(
-            base32Secret: "JBSWY3DPEHPK3PXP",
-            timeStep: 30,
-            digits: 6,
-            algorithm: .sha1,
-            t0: 0
-        )
-        #expect(totp2.digits == 6)
-    }
+            // Test base32 initialization
+            let totp2 = try RFC_6238.TOTP(
+                base32Secret: "JBSWY3DPEHPK3PXP",
+                timeStep: 30,
+                digits: 6,
+                algorithm: .sha1,
+                t0: 0
+            )
+            #expect(totp2.digits == 6)
+        }
 
-    @Test
-    func `README Line 156-165: HOTP Configuration`() throws {
-        let secret = Data("test secret".utf8)
+        @Test
+        func `README Line 156-165: HOTP Configuration`() throws {
+            let secret = Data("test secret".utf8)
 
-        let hotp = try RFC_6238.HOTP(
-            secret: secret,
-            digits: 6,
-            algorithm: .sha1
-        )
+            let hotp = try RFC_6238.HOTP(
+                secret: secret,
+                digits: 6,
+                algorithm: .sha1
+            )
 
-        #expect(hotp.digits == 6)
-        #expect(hotp.algorithm == .sha1)
-    }
+            #expect(hotp.digits == 6)
+            #expect(hotp.algorithm == .sha1)
+        }
 
-#endif
+    #endif
 
     @Test
     func `README Line 169-175: Supported Algorithms`() throws {
