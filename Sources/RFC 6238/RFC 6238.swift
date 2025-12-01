@@ -5,6 +5,7 @@
 //  Created by Coen ten Thije Boonkkamp on 2025-08-20.
 //
 
+public import Foundation
 
 /// Implementation of RFC 6238: TOTP: Time-Based One-Time Password Algorithm
 ///
@@ -101,7 +102,7 @@ public enum RFC_6238 {
         ///   - time: The time to generate OTP for (defaults to current time)
         ///   - hmacProvider: The HMAC provider implementation
         /// - Returns: The generated OTP as a string with leading zeros if necessary
-        public func generate(at time: Date = Date(), using hmacProvider: HMACProvider) -> String {
+        public func generate(at time: Date = Date(), using hmacProvider: any HMACProvider) -> String {
             let counter = self.counter(at: time)
             let hotp = HOTP(validatedSecret: secret, digits: digits, algorithm: algorithm)
             return hotp.generate(counter: counter, using: hmacProvider)
@@ -118,7 +119,7 @@ public enum RFC_6238 {
             _ otp: String,
             at time: Date = Date(),
             window: Int = 1,
-            using hmacProvider: HMACProvider
+            using hmacProvider: any HMACProvider
         ) -> Bool {
             let currentCounter = counter(at: time)
             
@@ -225,7 +226,7 @@ public enum RFC_6238 {
         ///   - counter: The counter value
         ///   - hmacProvider: The HMAC provider implementation
         /// - Returns: The generated OTP as a string with leading zeros if necessary
-        public func generate(counter: UInt64, using hmacProvider: HMACProvider) -> String {
+        public func generate(counter: UInt64, using hmacProvider: any HMACProvider) -> String {
             // Convert counter to big-endian bytes
             var counterBigEndian = counter.bigEndian
             let counterData = Data(bytes: &counterBigEndian, count: 8)
@@ -275,7 +276,7 @@ public enum RFC_6238 {
     }
     
     /// Supported HMAC algorithms
-    public enum Algorithm: String, Codable, CaseIterable, Sendable {
+    public enum Algorithm: String, Codable, Hashable, CaseIterable, Sendable {
         case sha1 = "SHA1"
         case sha256 = "SHA256"
         case sha512 = "SHA512"
@@ -303,23 +304,25 @@ public enum RFC_6238 {
     }
     
     /// Errors that can occur during TOTP/HOTP operations
-    public enum Error: Swift.Error, LocalizedError, Equatable {
+    public enum Error: Swift.Error, Sendable, Equatable {
         case invalidBase32String
         case invalidDigits(String)
         case invalidTimeStep(String)
         case emptySecret
-        
-        public var errorDescription: String? {
-            switch self {
-            case .invalidBase32String:
-                return "Invalid base32 encoded string"
-            case .invalidDigits(let message):
-                return "Invalid digits: \(message)"
-            case .invalidTimeStep(let message):
-                return "Invalid time step: \(message)"
-            case .emptySecret:
-                return "Secret key cannot be empty"
-            }
+    }
+}
+
+extension RFC_6238.Error: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .invalidBase32String:
+            return "Invalid base32 encoded string"
+        case .invalidDigits(let message):
+            return "Invalid digits: \(message)"
+        case .invalidTimeStep(let message):
+            return "Invalid time step: \(message)"
+        case .emptySecret:
+            return "Secret key cannot be empty"
         }
     }
 }

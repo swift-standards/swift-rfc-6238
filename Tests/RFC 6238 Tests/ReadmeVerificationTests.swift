@@ -5,6 +5,7 @@
 //  Verifies that README code examples actually work
 //
 
+import Foundation
 #if canImport(CryptoKit)
 import CryptoKit
 #endif

@@ -5,6 +5,7 @@
 //  Created by Coen ten Thije Boonkkamp on 2025-08-20.
 //
 
+import Foundation
 import Testing
 @testable import RFC_6238
 #if canImport(CryptoKit)
