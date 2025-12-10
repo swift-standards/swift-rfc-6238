@@ -102,8 +102,7 @@ public enum RFC_6238 {
         ///   - time: The time to generate OTP for (defaults to current time)
         ///   - hmacProvider: The HMAC provider implementation
         /// - Returns: The generated OTP as a string with leading zeros if necessary
-        public func generate(at time: Date = Date(), using hmacProvider: any HMACProvider) -> String
-        {
+        public func generate(at time: Date = Date(), using hmacProvider: any HMACProvider) -> String {
             let counter = self.counter(at: time)
             let hotp = HOTP(validatedSecret: secret, digits: digits, algorithm: algorithm)
             return hotp.generate(counter: counter, using: hmacProvider)
