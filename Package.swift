@@ -23,7 +23,7 @@ let package = Package(
     ],
     dependencies: [
         // Add RFC dependencies here as needed
-        // .package(path: "../swift-rfc-1123.git"),
+        // .package(path: "../swift-rfc-1123"),
     ],
     targets: [
         .target(
