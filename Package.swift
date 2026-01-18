@@ -19,25 +19,19 @@ let package = Package(
         .watchOS(.v26)
     ],
     products: [
-        .library(name: .rfc6238, targets: [.rfc6238]),
+        .library(name: "RFC 6238", targets: ["RFC 6238"])
     ],
     dependencies: [
         // Add RFC dependencies here as needed
-        // .package(path: "../swift-rfc-1123"),
+        // .package(path: "../swift-rfc-1123")
     ],
     targets: [
         .target(
-            name: .rfc6238,
+            name: "RFC 6238",
             dependencies: [
                 // Add target dependencies here
             ]
-        ),
-        .testTarget(
-            name: .rfc6238.tests,
-            dependencies: [
-                .rfc6238
-            ]
-        ),
+        )
     ],
     swiftLanguageModes: [.v6]
 )
