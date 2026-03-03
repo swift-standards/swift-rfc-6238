@@ -22,14 +22,13 @@ let package = Package(
         .library(name: "RFC 6238", targets: ["RFC 6238"])
     ],
     dependencies: [
-        // Add RFC dependencies here as needed
-        // .package(path: "../swift-rfc-1123")
+        .package(path: "../../swift-primitives/swift-dependency-primitives"),
     ],
     targets: [
         .target(
             name: "RFC 6238",
             dependencies: [
-                // Add target dependencies here
+                .product(name: "Dependency Primitives", package: "swift-dependency-primitives"),
             ]
         ),
         .testTarget(
