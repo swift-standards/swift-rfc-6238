@@ -43,7 +43,7 @@ public enum RFC_6238 {
             digits: Int = 6,
             algorithm: Algorithm = .sha1,
             t0: TimeInterval = 0
-        ) throws {
+        ) throws(Error) {
             guard !secret.isEmpty else {
                 throw Error.emptySecret
             }
@@ -75,7 +75,7 @@ public enum RFC_6238 {
             digits: Int = 6,
             algorithm: Algorithm = .sha1,
             t0: TimeInterval = 0
-        ) throws {
+        ) throws(Error) {
             guard let secret = Data(base32Encoded: base32Secret) else {
                 throw Error.invalidBase32String
             }
@@ -196,7 +196,7 @@ public enum RFC_6238 {
             secret: Data,
             digits: Int = 6,
             algorithm: Algorithm = .sha1
-        ) throws {
+        ) throws(Error) {
             guard !secret.isEmpty else {
                 throw Error.emptySecret
             }
