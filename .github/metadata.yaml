@@ -1,0 +1,11 @@
+# .github/metadata.yaml
+# Triaged by AI-assisted bulk pass (2026-04-29).
+description: "Swift implementation of RFC 6238: TOTP: Time-Based One-Time Password Algorithm."
+topics:
+  - standards
+  - rfc
+  - rfc-6238
+  - authentication
+  - otp
+  - security
+homepage: "https://swift-institute.org"
